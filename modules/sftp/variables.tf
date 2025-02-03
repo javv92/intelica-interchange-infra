@@ -54,3 +54,19 @@ variable "certificate_arn" {
   nullable = true
   default  = null
 }
+variable "buckets" {
+  type = map(object({
+    arn = string
+    kms_key_arn = optional(string)
+  }))
+  default = {}
+}
+variable "users" {
+  type = map(object({
+    home_directory = object({
+      bucket_key = string
+      prefix     = string
+    })
+  }))
+  default = {}
+}

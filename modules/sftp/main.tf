@@ -1,5 +1,5 @@
 module "sftp_server" {
-  source = "../../../../modules/intelica-module-transfer-family/sftp-server"
+  source = "../../../../modules/intelica-module-transfer-family/sftp-s3-server"
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -16,4 +16,6 @@ module "sftp_server" {
   hosted_zone_id         = var.hosted_zone_id
   allowed_cidr           = var.allowed_cidr
   allowed_security_group = var.allowed_security_group
+  buckets                = var.buckets
+  users                  = var.users
 }

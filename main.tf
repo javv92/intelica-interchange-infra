@@ -28,4 +28,18 @@ module "sftp" {
   hosted_zone_id         = var.sftp.hosted_zone_id
   allowed_cidr           = var.sftp.allowed_cidr
   allowed_security_group = var.sftp.allowed_security_group
+  buckets = {
+    landing = {
+      arn         = module.storage.landing_bucket_arn
+      kms_key_arn = module.storage.landing_bucket_kms_key_arn
+    }
+  }
+  users = {
+    usr_cdno = {
+      home_directory = {
+        bucket_key = "landing"
+        prefix     = "CNDO"
+      }
+    }
+  }
 }
