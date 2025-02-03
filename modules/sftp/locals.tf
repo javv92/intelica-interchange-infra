@@ -1,0 +1,3 @@
+locals {
+  # security_groups
+}
