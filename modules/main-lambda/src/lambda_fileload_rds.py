@@ -10,7 +10,7 @@ import time
 
 def get_secret():
 
-    secret_name = "app-interchange-secret-rds-prod"
+    secret_name = "app-interchange-secret-rds-dev"
     region_name = "us-east-1"
 
 
