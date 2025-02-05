@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "fran-s3-terraform-tf-state-bucket"
+    bucket = "terraform-backend-891376942769"
     key    = "intelica-interchange/dev/terraform.tfstate"
     region = "us-east-1"
   }

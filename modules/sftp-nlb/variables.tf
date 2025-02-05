@@ -18,9 +18,7 @@ variable "prefix_resource_name" {
     error_message = "The prefix_resource_name value must be lowercase!"
   }
 }
-variable "region" {
-  type = string
-}
+
 variable "name" {
   type = string
 }
@@ -33,6 +31,10 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "is_internet_facing" {
+  type    = string
+  default = true
+}
 variable "custom_host_name" {
   type     = string
   nullable = true
@@ -47,14 +49,6 @@ variable "certificate_arn" {
   type     = string
   nullable = true
   default  = null
-}
-variable "buckets" {
-  type = object({
-    landing = object({
-      arn = string
-      kms_key_arn = optional(string)
-    })
-  })
 }
 variable "allowed_cidr" {
   type = map(string)

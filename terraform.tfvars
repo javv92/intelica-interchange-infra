@@ -1,18 +1,23 @@
 global_tags = { coid : "itl", "assetid" : "0004", "apid" : "itx", "env" : "dev" }
-stack_number         = "01"
+stack_number         = "02"
 prefix_resource_name = "itl-0004-itx-dev"
 
 
-vpc_id = "vpc-0d3938756f28f4e87"
-public_subnet_ids = ["subnet-052a977648e3cc31c", "subnet-05c6d68d95269aede"]
-private_subnet_ids = ["subnet-03c689501d4de3b98", "subnet-029ae9fea8543ec50"]
+vpc_id = "vpc-0df64c1b97c48f5f7"
+public_subnet_ids = ["subnet-022b68abb819d519c", "subnet-08d2d24cc77409c86"]
+private_subnet_ids = ["subnet-027553d801a80ef32", "subnet-0a2d90108aa3cd292"]
 
 sftp = {
-  subnet           = "subnet-05c6d68d95269aede"
-  certificate_arn  = "arn:aws:acm:us-east-1:917972781642:certificate/f6c0a0c0-4c5e-4fff-9163-514c0cf78363"
-  custom_host_name = "sftp.john.cloudstudio.cloud"
-  hosted_zone_id   = "Z00062881JAFYWFAUV3RC"
+  subnet           = "subnet-08d2d24cc77409c86"
+  certificate_arn  = "arn:aws:acm:us-east-1:891376942769:certificate/f5ccf16b-ee24-43b4-b1f8-ce19eaa67ccc"
+  custom_host_name = "sftp.dev.intelica.com "
+  hosted_zone_id   = "Z01574663NHZJL1H40WUD"
   allowed_cidr = { public = "0.0.0.0/0" }
-  allowed_security_group = { "load balancer" = "sg-0cc0be7ce06d33ead" }
 }
 
+sftp_nlb = {
+  certificate_arn  = "arn:aws:acm:us-east-1:891376942769:certificate/f5ccf16b-ee24-43b4-b1f8-ce19eaa67ccc"
+  custom_host_name = "sftpx.dev.intelica.com "
+  hosted_zone_id   = "Z01574663NHZJL1H40WUD"
+  allowed_cidr = { public = "0.0.0.0/0" }
+}

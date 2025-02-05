@@ -34,16 +34,24 @@ module "sftp" {
       kms_key_arn = module.storage.landing_bucket_kms_key_arn
     }
   }
-  users = {
-    usr_cdno = {
-      home_directory = {
-        bucket_key = "landing"
-        prefix     = "CNDO"
-      }
-    }
-  }
 }
+module "sftp_nlb" {
+  source = "./modules/sftp-nlb"
 
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+
+  name                   = "sftp"
+  vpc_id                 = var.vpc_id
+  subnet_ids             = var.public_subnet_ids
+  is_internet_facing     = "true"
+  certificate_arn        = var.sftp_nlb.certificate_arn
+  custom_host_name       = var.sftp_nlb.custom_host_name
+  hosted_zone_id         = var.sftp_nlb.hosted_zone_id
+  allowed_cidr           = var.sftp.allowed_cidr
+  allowed_security_group = var.sftp.allowed_security_group
+
+}
 module "main_queue" {
   source = "./modules/main-queue"
 

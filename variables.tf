@@ -45,11 +45,14 @@ variable "sftp" {
     hosted_zone_id = optional(string, null)
     allowed_cidr = optional(map(string), {})
     allowed_security_group = optional(map(string), {})
-    # users = optional(map(object({
-    #   home_directory = object({
-    #     bucket_key = string
-    #     prefix     = string
-    #   })
-    # })), {})
+  })
+}
+variable "sftp_nlb" {
+  type = object({
+    certificate_arn = optional(string, null)
+    custom_host_name = optional(string, null)
+    hosted_zone_id = optional(string, null)
+    allowed_cidr = optional(map(string), {})
+    allowed_security_group = optional(map(string), {})
   })
 }
