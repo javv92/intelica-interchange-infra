@@ -50,6 +50,7 @@ module "sftp_nlb" {
   hosted_zone_id         = var.sftp_nlb.hosted_zone_id
   allowed_cidr           = var.sftp.allowed_cidr
   allowed_security_group = var.sftp.allowed_security_group
+  sftp_server_ips = module.sftp.server_ips
 
 }
 module "main_queue" {

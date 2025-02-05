@@ -58,3 +58,6 @@ variable "allowed_security_group" {
   type = map(string)
   default = {}
 }
+variable "sftp_server_ips" {
+  type = list(string)
+}
