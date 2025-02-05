@@ -44,7 +44,7 @@ module "sftp_nlb" {
   name                   = "sftp"
   vpc_id                 = var.vpc_id
   subnet_ids             = var.public_subnet_ids
-  is_internet_facing     = "true"
+  is_internet_facing     = true
   certificate_arn        = var.sftp_nlb.certificate_arn
   custom_host_name       = var.sftp_nlb.custom_host_name
   hosted_zone_id         = var.sftp_nlb.hosted_zone_id
