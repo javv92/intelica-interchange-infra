@@ -36,7 +36,9 @@ variable "private_subnet_ids" {
   description = "List of subnet IDs for the DB subnet group"
   type = list(string)
 }
-
+variable "restricted_subnet_ids" {
+  type = list(string)
+}
 variable "sftp" {
   type = object({
     subnet = string
@@ -54,5 +56,10 @@ variable "sftp_nlb" {
     hosted_zone_id = optional(string, null)
     allowed_cidr = optional(map(string), {})
     allowed_security_group = optional(map(string), {})
+  })
+}
+variable "database" {
+  type = object({
+    snapshot_identifier = string
   })
 }

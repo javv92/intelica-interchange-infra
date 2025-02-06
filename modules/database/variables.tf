@@ -25,3 +25,36 @@ variable "name" {
 variable "kms_key_arn" {
   type = string
 }
+
+variable "snapshot_identifier" {
+  description = "DB snapshot ARN to restore from"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC ID where the DB cluster will be deployed"
+  type        = string
+}
+
+variable "database_subnet_ids" {
+  description = "List of subnet IDs for the DB subnet group"
+  type = list(string)
+}
+
+variable "allowed_security_groups" {
+  description = "List of security group IDs allowed to connect to the cluster"
+  type = list(string)
+  default = []
+}
+
+variable "allowed_cidr_blocks" {
+  description = "List of CIDR blocks allowed to connect to the cluster"
+  type = list(string)
+  default = []
+}
+
+variable "db_cluster_parameters" {
+  description = "Map of DB cluster parameters to apply"
+  type = list(map(string))
+  default = []
+}

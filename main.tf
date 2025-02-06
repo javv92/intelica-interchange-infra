@@ -50,7 +50,7 @@ module "sftp_nlb" {
   hosted_zone_id         = var.sftp_nlb.hosted_zone_id
   allowed_cidr           = var.sftp.allowed_cidr
   allowed_security_group = var.sftp.allowed_security_group
-  sftp_server_ips = module.sftp.server_ips
+  sftp_server_ips        = module.sftp.server_ips
 
 }
 module "main_queue" {
@@ -69,6 +69,9 @@ module "database" {
   prefix_resource_name = var.prefix_resource_name
   name                 = "app"
   kms_key_arn          = module.base.key_arn
+  database_subnet_ids  = var.restricted_subnet_ids
+  snapshot_identifier  = var.database.snapshot_identifier
+  vpc_id               = var.vpc_id
 }
 module "main_lambda" {
   source = "./modules/main-lambda"
@@ -127,6 +130,19 @@ module "main_lambda" {
         arn         = module.main_queue.ucit_queue_arn
         kms_key_arn = module.main_queue.ucit_kms_key_arn
       }
+    }
+  }
+}
+module "fileload-lambda" {
+  source               = "./modules/fileload-lambda"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  name                 = "file-load"
+  sftp_server_id       = module.sftp.server_id
+  secrets = {
+    database = {
+      arn         = module.database.secret_arn
+      kms_key_arn = module.database.secret_kms_key_id
     }
   }
 }
