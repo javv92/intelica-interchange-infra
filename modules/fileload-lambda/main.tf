@@ -1,8 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.81.0"
+    }
+  }
+}
 locals {
-  function_name         = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}"
-  function_role_name    = "${local.function_name}-role"
-  python_lib_layer_name = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}-pythonlibs-lyr"
-  sftp_event_rule_name  = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}-sftp-rule"
+  function_name                = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}"
+  function_role_name           = "${local.function_name}-role"
+  function_security_group_name = "${local.function_name}-sg"
+  python_lib_layer_name        = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}-pythonlibs-lyr"
+  sftp_event_rule_name         = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}-sftp-rule"
 
 }
 
@@ -43,8 +52,8 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy" {
     }
   )
 }
-resource "aws_iam_role_policy" "secrets_manager_logs_policy" {
-  name = "${local.function_role_name}-secrets-manager-pol"
+resource "aws_iam_role_policy" "secrets_manager_policy" {
+  name = "${local.function_role_name}-secrets-pol"
   role = aws_iam_role.role.id
 
   policy = jsonencode(
@@ -56,7 +65,7 @@ resource "aws_iam_role_policy" "secrets_manager_logs_policy" {
           Action = [
             "secretsmanager:GetSecretValue",
           ]
-          Resource = toset([for secret in var.secrets : secret.arn])
+          Resource = toset([var.secrets.interchange_database.arn])
         },
         {
           Effect = "Allow"
@@ -67,7 +76,31 @@ resource "aws_iam_role_policy" "secrets_manager_logs_policy" {
             "kms:GenerateDataKey*",
             "kms:DescribeKey",
           ]
-          Resource = toset([for secret in var.secrets : secret.kms_key_arn])
+          Resource = toset([var.secrets.interchange_database.kms_key_arn])
+        }
+      ]
+    }
+  )
+}
+resource "aws_iam_role_policy" "vpc_policy" {
+  name = "${local.function_role_name}-vpc-pol"
+  role = aws_iam_role.role.id
+
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "ec2:CreateNetworkInterface",
+            "ec2:DescribeNetworkInterfaces",
+            "ec2:DescribeSubnets",
+            "ec2:DeleteNetworkInterface",
+            "ec2:AssignPrivateIpAddresses",
+            "ec2:UnassignPrivateIpAddresses"
+          ],
+          "Resource" : ["*"]
         }
       ]
     }
@@ -79,21 +112,46 @@ resource "aws_lambda_layer_version" "lambda_layer" {
 
   compatible_runtimes = ["python3.10"]
 }
+resource "aws_security_group" "security_group" {
+  name        = local.function_security_group_name
+  description = local.function_security_group_name
+  vpc_id      = var.vpc_id
+  tags = {
+    Name = local.function_security_group_name
+  }
+}
+resource "aws_vpc_security_group_egress_rule" "all_traffic_egress" {
+  security_group_id = aws_security_group.security_group.id
+  from_port         = -1
+  to_port           = -1
+  ip_protocol       = -1
+  cidr_ipv4         = "0.0.0.0/0"
+  tags = { Name : "All traffic" }
+}
 resource "aws_lambda_function" "function" {
   function_name = local.function_name
   role          = aws_iam_role.role.arn
-  handler       = "lambda_fileload_rds.lambda_handler"
+  handler       = "src/lambda_fileload_rds.lambda_handler"
   runtime       = "python3.10"
   timeout       = 3
   filename      = "${path.module}/src.zip"
   source_code_hash = filebase64sha256("${path.module}/src.zip")
+  vpc_config {
+    security_group_ids = [aws_security_group.security_group.id]
+    subnet_ids = var.subnet_ids
+  }
   environment {
     variables = {
+      INTERCHANGE_DATABASE_SECRET_ARN = var.secrets.interchange_database.arn
+      BUCKET_NAME                     = var.bucket_name
     }
   }
   layers = [
     aws_lambda_layer_version.lambda_layer.arn,
-    # "arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python310:16"
+    "arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python310:16"
+  ]
+  depends_on = [
+    aws_iam_role_policy.vpc_policy
   ]
 }
 

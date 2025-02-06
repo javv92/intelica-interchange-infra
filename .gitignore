@@ -1,0 +1,6 @@
+**.idea/
+**.terraform/
+.terraform.lock.hcl
+errored.tfstate
+terraform.tfvars
+providers.tf

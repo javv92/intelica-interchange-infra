@@ -21,15 +21,27 @@ variable "prefix_resource_name" {
 variable "name" {
   type = string
 }
-
+variable "vpc_id" {
+  description = "VPC ID where the AD Connector will be created"
+  type        = string
+}
+variable "subnet_ids" {
+  description = "List of Subnet IDs for the AD Connector"
+  type = list(string)
+}
 variable "sftp_server_id" {
   type = string
 }
 
-variable "secrets" {
-  type = map(object({
-    arn = string
-    kms_key_arn = optional(string)
-  }))
+variable "bucket_name" {
+  type = string
 }
 
+variable "secrets" {
+  type = object({
+    interchange_database = object({
+      arn = string
+      kms_key_arn = optional(string)
+    })
+  })
+}

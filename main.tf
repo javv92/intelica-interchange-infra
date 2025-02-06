@@ -140,9 +140,21 @@ module "fileload-lambda" {
   name                 = "file-load"
   sftp_server_id       = module.sftp.server_id
   secrets = {
-    database = {
+    interchange_database = {
       arn         = module.database.secret_arn
       kms_key_arn = module.database.secret_kms_key_id
     }
   }
+  bucket_name = module.storage.landing_bucket_name
+  subnet_ids  = var.private_subnet_ids
+  vpc_id      = var.vpc_id
+}
+resource "aws_vpc_security_group_ingress_rule" "file_load_lambda_to_database_security_group_ingress" {
+  security_group_id            = module.database.security_group_id
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = module.fileload-lambda.security_group_id
+  description                  = "access to lambda function ${module.fileload-lambda.function_name}"
+  tags = { Name : module.fileload-lambda.function_name }
 }

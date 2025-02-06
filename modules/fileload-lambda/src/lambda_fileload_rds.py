@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 import pandas as pd
 from dataclasses import dataclass
@@ -10,7 +11,9 @@ import time
 
 def get_secret():
 
-    secret_name = "app-interchange-secret-rds-dev"
+#     secret_name = "app-interchange-secret-rds-dev"
+    secret_name = os.getenv("INTERCHANGE_DATABASE_SECRET_ARN")
+    _bucket_name = os.getenv("BUCKET_NAME")
     region_name = "us-east-1"
 
 
@@ -53,7 +56,8 @@ def cnn_postgresql(secret_data):
 
 def lambda_handler(event, context):
     print("Time at which lambda invoke: " + str(datetime.now()) + "   Event : " + str(event))
-    bucket_name = "intelica-interchange-landing-dev"
+#     bucket_name = "intelica-interchange-landing-dev"
+    bucket_name = _bucket_name
     schema_name = 'control'
     table_name = 'uploaded_files_itx'
 
