@@ -63,3 +63,10 @@ variable "database" {
     snapshot_identifier = string
   })
 }
+variable "instance" {
+  type = object({
+    ami           = string
+    instance_type = string
+    key_pair = optional(string, null)
+  })
+}
