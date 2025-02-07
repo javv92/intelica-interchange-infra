@@ -251,11 +251,11 @@ module "instance" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "instance_to_database_security_group_ingress" {
-  security_group_id            = module.instance.security_group_id
+  security_group_id            = module.database.security_group_id
   from_port                    = 5432
   to_port                      = 5432
   ip_protocol                  = "tcp"
-  referenced_security_group_id = module.fileload-lambda.security_group_id
-  description                  = "access to lambda function ${module.instance.instance_name}"
+  referenced_security_group_id = module.instance.security_group_id
+  description                  = "access to ec2 instance ${module.instance.instance_name}"
   tags = { Name : module.instance.instance_name }
 }
