@@ -259,3 +259,22 @@ resource "aws_vpc_security_group_ingress_rule" "instance_to_database_security_gr
   description                  = "access to ec2 instance ${module.instance.instance_name}"
   tags = { Name : module.instance.instance_name }
 }
+module "smtp" {
+  source               = "./modules/smtp"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  name                 = "smtp"
+  kms_key_arn          = module.base.key_arn
+}
+module "sendmail-lambda" {
+  source               = "./modules/send-mail-lambda"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  name                 = "sendmail"
+  secrets = {
+    smtp = {
+      arn         = module.smtp.secret_arn
+      kms_key_arn = module.smtp.secret_kms_key_id
+    }
+  }
+}
