@@ -30,5 +30,12 @@ database = {
 instance = {
   ami           = "ami-09a26b8638c36ffbb"
   instance_type = "r6g.xlarge"
-  key_pair = "itx"
+  key_pair      = "itx"
+}
+
+opensearch = {
+  engine_version = "OpenSearch_2.3"
+  instance_type  = "t3.small.search"
+  storage_size   = 60
+  instance_count = 3
 }

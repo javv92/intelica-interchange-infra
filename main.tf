@@ -278,3 +278,13 @@ module "sendmail-lambda" {
     }
   }
 }
+module "opensearch" {
+  source               = "./modules/opensearch"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  kms_key_arn          = module.base.key_arn
+  engine_version       = var.opensearch.engine_version
+  instance_type        = var.opensearch.instance_type
+  storage_size = var.opensearch.storage_size
+  instance_count = var.opensearch.instance_count
+}

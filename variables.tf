@@ -70,3 +70,11 @@ variable "instance" {
     key_pair = optional(string, null)
   })
 }
+variable "opensearch" {
+  type = object({
+    engine_version = optional(string, "OpenSearch_2.3")
+    instance_type = optional(string, "t3.small.search")
+    storage_size = optional(number, 100)
+    instance_count = optional(number, 1)
+  })
+}
