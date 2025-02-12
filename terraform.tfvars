@@ -1,25 +1,25 @@
 global_tags = { coid : "itl", "assetid" : "0004", "apid" : "itx", "env" : "dev" }
-stack_number         = "02"
+stack_number         = "01"
 prefix_resource_name = "itl-0004-itx-dev"
 
 
-vpc_id = "vpc-0df64c1b97c48f5f7"
-public_subnet_ids = ["subnet-022b68abb819d519c", "subnet-08d2d24cc77409c86"]
-private_subnet_ids = ["subnet-027553d801a80ef32", "subnet-0a2d90108aa3cd292"]
-restricted_subnet_ids = ["subnet-0ccad48261dae4945", "subnet-0e58fd4c134dff4f1"]
+vpc_id = "vpc-0fe1bde56eb2cb8a3"
+public_subnet_ids = ["subnet-0090144bac3a064cf", "subnet-08b0ca3938a845ea0"]
+private_subnet_ids = ["subnet-0abb425bb9d52d496", "subnet-0248461e04fd6dc1a"]
+restricted_subnet_ids = ["subnet-0c9311088ec410989", "subnet-00d947574978b7c74"]
 
 sftp = {
-  subnet           = "subnet-08d2d24cc77409c86"
-  certificate_arn  = "arn:aws:acm:us-east-1:891376942769:certificate/f5ccf16b-ee24-43b4-b1f8-ce19eaa67ccc"
-  custom_host_name = "sftp.dev.intelica.com "
-  hosted_zone_id   = "Z01574663NHZJL1H40WUD"
+  subnet           = "subnet-08b0ca3938a845ea0"
+  certificate_arn  = "arn:aws:acm:us-east-1:861276092327:certificate/39200c52-8ffd-4ac1-b59c-a9c71f1204c3"
+  custom_host_name = "sftp.dev.itx.intelica.com"
+  hosted_zone_id   = "Z07319932HJTN65P3SNJ2"
   allowed_cidr = { public = "0.0.0.0/0" }
 }
 
 sftp_nlb = {
-  certificate_arn  = "arn:aws:acm:us-east-1:891376942769:certificate/f5ccf16b-ee24-43b4-b1f8-ce19eaa67ccc"
-  custom_host_name = "sftpx.dev.intelica.com "
-  hosted_zone_id   = "Z01574663NHZJL1H40WUD"
+  certificate_arn  = "arn:aws:acm:us-east-1:861276092327:certificate/39200c52-8ffd-4ac1-b59c-a9c71f1204c3"
+  custom_host_name = "sftpx.dev.itx.intelica.com"
+  hosted_zone_id   = "Z07319932HJTN65P3SNJ2"
   allowed_cidr = { public = "0.0.0.0/0" }
 }
 
@@ -30,7 +30,7 @@ database = {
 instance = {
   ami           = "ami-09a26b8638c36ffbb"
   instance_type = "r6g.xlarge"
-  key_pair      = "itx"
+  key_pair      = "itl-0004-itx-dev-ec2-app-01"
 }
 
 opensearch = {

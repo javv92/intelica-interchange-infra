@@ -52,6 +52,8 @@ module "sftp_nlb" {
   allowed_security_group = var.sftp.allowed_security_group
   sftp_server_ips        = module.sftp.server_ips
 
+  depends_on = [module.sftp]
+
 }
 module "main_queue" {
   source = "./modules/main-queue"
@@ -285,6 +287,6 @@ module "opensearch" {
   kms_key_arn          = module.base.key_arn
   engine_version       = var.opensearch.engine_version
   instance_type        = var.opensearch.instance_type
-  storage_size = var.opensearch.storage_size
-  instance_count = var.opensearch.instance_count
+  storage_size         = var.opensearch.storage_size
+  instance_count       = var.opensearch.instance_count
 }

@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "terraform-backend-891376942769"
-    key    = "intelica-interchange/dev/terraform.tfstate"
+    bucket = "terraform-backend-861276092327"
+    key    = "intelica-interchange/infra/dev/terraform.tfstate"
     region = "us-east-1"
   }
 
