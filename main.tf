@@ -265,7 +265,7 @@ module "smtp" {
   source               = "./modules/smtp"
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
-  name                 = "smtp"
+  name                 = "app"
   kms_key_arn          = module.base.key_arn
 }
 module "sendmail-lambda" {

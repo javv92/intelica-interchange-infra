@@ -2,5 +2,5 @@
 **.terraform/
 .terraform.lock.hcl
 errored.tfstate
-terraform.portal-dev.tfvars
-providers.portal-dev.tf
+terraform.tfvars
+providers.tf
