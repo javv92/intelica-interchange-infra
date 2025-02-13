@@ -31,6 +31,15 @@ instance = {
   ami           = "ami-09a26b8638c36ffbb"
   instance_type = "r6g.xlarge"
   key_pair      = "itl-0004-itx-dev-ec2-app-01"
+  allowed_cidr = {
+    all_traffic = {
+      "FORTIVPN ingress"  = "10.0.3.100/32"
+      "FortiSIEM ingress" = "100.0.4.38/32"
+    }
+    ssh = {
+      "Accesos ssh" = "0.0.0.0/0"
+    }
+  }
 }
 
 opensearch = {

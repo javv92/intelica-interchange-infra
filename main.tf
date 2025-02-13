@@ -168,12 +168,14 @@ module "instance" {
   prefix_resource_name = var.prefix_resource_name
   name                 = "app"
 
-  subnet_id     = var.private_subnet_ids[0]
-  vpc_id        = var.vpc_id
-  ami           = var.instance.ami
-  instance_type = var.instance.instance_type
-  kms_key_arn   = module.base.key_arn
-  key_pair      = var.instance.key_pair
+  subnet_id              = var.private_subnet_ids[0]
+  vpc_id                 = var.vpc_id
+  ami                    = var.instance.ami
+  instance_type          = var.instance.instance_type
+  kms_key_arn            = module.base.key_arn
+  key_pair               = var.instance.key_pair
+  allowed_cidr           = var.instance.allowed_cidr
+  allowed_security_group = var.instance.allowed_security_group
 
   secrets = {
     interchange_database = {

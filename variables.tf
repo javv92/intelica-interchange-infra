@@ -68,6 +68,14 @@ variable "instance" {
     ami           = string
     instance_type = string
     key_pair = optional(string, null)
+    allowed_cidr = optional(object({
+      all_traffic = optional(map(string), {})
+      ssh = optional(map(string), {})
+    }), {})
+    allowed_security_group = optional(object({
+      all_traffic = optional(map(string), {})
+      ssh = optional(map(string), {})
+    }), {})
   })
 }
 variable "opensearch" {

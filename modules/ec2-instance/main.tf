@@ -12,17 +12,11 @@ module instance {
   security_group = {
     ingress = merge(
       # ALL TRAFFIC
-      {for k, v in var.allowed_cidr.all_traffic : k => { cidr = v, protocol = -1, from_port = -1, to_port = -1 }},
-      {
-        for k, v in var.allowed_security_group.all_traffic : k =>
-        { security_group = v, protocol = -1, from_port = -1, to_port = -1 }
-      },
+      {for k, v in var.allowed_cidr.all_traffic : k => { cidr = v, protocol = -1, port = -1 }},
+      {for k, v in var.allowed_security_group.all_traffic : k => { security_group = v, protocol = -1, port = -1 }},
       # SSH
-      {for k, v in var.allowed_cidr.ssh : k => { cidr = v, protocol = "TCP", from_port = 22, to_port = 22 }},
-      {
-        for k, v in var.allowed_security_group.ssh : k =>
-        { security_group = v, protocol = "TCP", from_port = 22, to_port = 22 }
-      },
+      {for k, v in var.allowed_cidr.ssh : k => { cidr = v, protocol = "TCP", port = 22 }},
+      {for k, v in var.allowed_security_group.ssh : k => { security_group = v, protocol = "TCP", port = 22 }},
     )
   }
   key_pair = var.key_pair
