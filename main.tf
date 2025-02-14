@@ -252,6 +252,11 @@ module "instance" {
       kms_key_arn = module.main_queue.ucit_kms_key_arn
     }
   }
+  lambda = {
+    send_mail = {
+      arn = module.sendmail-lambda.function_arn
+    }
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "instance_to_database_security_group_ingress" {

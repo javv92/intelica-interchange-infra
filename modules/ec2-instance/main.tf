@@ -128,3 +128,22 @@ resource "aws_iam_role_policy" "sqs_policy" {
     }
   )
 }
+resource "aws_iam_role_policy" "lambda_policy" {
+  name = "${module.instance.role_name}-lambda-pol"
+  role = module.instance.role_name
+
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          Effect = "Allow"
+          Action = [
+            "lambda:InvokeFunction"
+          ]
+          Resource = toset([var.lambda.send_mail.arn])
+        }
+      ]
+    }
+  )
+}

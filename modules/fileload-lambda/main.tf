@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.81.0"
-    }
-  }
-}
 locals {
   function_name                = "${var.prefix_resource_name}-lmbd-${var.name}-${var.stack_number}"
   function_role_name           = "${local.function_name}-role"

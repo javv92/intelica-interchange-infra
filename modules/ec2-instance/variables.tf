@@ -78,3 +78,10 @@ variable "secrets" {
     })
   })
 }
+variable "lambda" {
+  type = object({
+    send_mail = object({
+      arn = string
+    })
+  })
+}
