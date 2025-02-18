@@ -109,7 +109,10 @@ resource "aws_iam_role_policy" "sqs_policy" {
           Effect = "Allow"
           Action = [
             "sqs:SendMessage",
-            "sqs:GetQueueAttributes"
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl",
+            "sqs:ReceiveMessage",
+            "sqs:DeleteMessage"
           ]
           Resource = toset([for queue in var.queues : queue.arn])
         },
