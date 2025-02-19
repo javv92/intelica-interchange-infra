@@ -62,6 +62,7 @@ class connect_to_s3:
             object: boto3 object.
         """
         try:
+            print("loading credential from bucket ", bucket)
             credentials = self.loading_credentials(bucket)
             s3 = boto3.resource(
                 service_name="s3",
