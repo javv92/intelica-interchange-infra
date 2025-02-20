@@ -1,5 +1,6 @@
 module "sftp_nlb" {
-  source = "../../../../modules/intelica-module-load-balancer/network-load-balancer"
+  # source = "../../../../modules/intelica-module-load-balancer/network-load-balancer"
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-load-balancer//network-load-balancer"
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -24,7 +25,8 @@ module "sftp_nlb" {
   # }
 }
 module "sft_server" {
-  source = "../../../../modules/intelica-module-load-balancer/network-load-balancer-ip-application"
+  # source = "../../../../modules/intelica-module-load-balancer/network-load-balancer-ip-application"
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-load-balancer//network-load-balancer-ip-application"
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name

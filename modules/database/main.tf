@@ -3,7 +3,9 @@ resource "aws_secretsmanager_secret" "secret" {
   kms_key_id = var.kms_key_arn
 }
 module "cluster_rds_serverless" {
-  source = "../../../../modules/intelica-module-rds/aurora-postgresql"
+  # source = "../../../../modules/intelica-module-rds/aurora-postgresql"
+
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-rds//aurora-postgresql"
 
   name                 = var.name
   stack_number         = var.stack_number

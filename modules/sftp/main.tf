@@ -1,5 +1,6 @@
 module "sftp_server" {
-  source = "../../../../modules/intelica-module-transfer-family/sftp-s3-server"
+  # source = "../../../../modules/intelica-module-transfer-family/sftp-s3-server"
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-transfer-family//sftp-s3-server"
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name

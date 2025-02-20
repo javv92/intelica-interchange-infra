@@ -1,5 +1,6 @@
 module instance {
-  source               = "../../../../modules/intelica-module-ec2/instance"
+  # source               = "../../../../modules/intelica-module-ec2/instance"
+  source               = "git@github.com:ITL-ORG-INFRA/intelica-module-ec2//instance"
   name                 = var.name
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name

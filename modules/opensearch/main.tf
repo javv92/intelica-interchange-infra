@@ -1,5 +1,6 @@
 module "domain" {
-  source = "../../../../modules/intelica-module-opensearch/domain"
+  # source = "../../../../modules/intelica-module-opensearch/domain"
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-opensearch//domain"
 
 
   name                 = var.name
