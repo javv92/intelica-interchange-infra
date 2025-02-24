@@ -1,19 +1,19 @@
 # Módulo EC2 Instance
 
-Crea una instancia EC2 con permisos para interactuar con varios servicios de AWS incluyendo Secrets Manager, S3, SQS y
-Lambda.
+Crea una instancia EC2 con permisos para interactuar con varios servicios de AWS incluyendo Secrets Manager, S3, SQS y Lambda.
 
 ## Variables
 
+### Variables de Identificación
+
 #### `stack_number`
 
-- **Descripción**: Usado para evitar conflictos al desplegar varias instancias de esta infraestructura con el mismo
-  nombre.
+- **Descripción**: Usado para evitar conflictos al desplegar varias instancias de esta infraestructura con el mismo nombre.
 - **Tipo**: `string`
 - **Valor por defecto**: `"00"`
 - **Validación**:
-    - Debe ser un número de dos dígitos (00 al 99).
-    - Mensaje de error: "Stack Number solo permite valores de 00 al 99."
+  - Debe ser un número de dos dígitos (00 al 99).
+  - Mensaje de error: "Stack Number solo permite valores de 00 al 99."
 
 #### `prefix_resource_name`
 
@@ -21,141 +21,144 @@ Lambda.
 - **Tipo**: `string`
 - **Valor por defecto**: `"aply-0001-gen-all"`
 - **Validación**:
-    - Debe contener solo letras minúsculas, números y guiones (`-`).
-    - Mensaje de error: "The prefix_resource_name value must be lowercase!"
+  - Debe contener solo letras minúsculas, números y guiones (`-`).
+  - Mensaje de error: "The prefix_resource_name value must be lowercase!"
 
 #### `name`
 
-- **Descripción**: Nombre identificador para los recursos
+- **Descripción**: Nombre identificador para los recursos.
 - **Tipo**: `string`
 - **Requerido**: Sí
 
-#### `vpc_id`
-
-- **Descripción**: ID de la VPC donde se desplegará la instancia
-- **Tipo**: `string`
-- **Requerido**: Sí
-
-#### `subnet_id`
-
-- **Descripción**: ID de la subnet donde se desplegará la instancia
-- **Tipo**: `string`
-- **Requerido**: Sí
-
-#### `key_pair`
-
-- **Descripción**: Nombre del key pair para acceso SSH
-- **Tipo**: `string`
-- **Valor por defecto**: `null`
-- **Opcional**: Sí
+### Variables de Instancia
 
 #### `ami`
 
-- **Descripción**: ID de la AMI a utilizar
+- **Descripción**: ID de la AMI a utilizar.
 - **Tipo**: `string`
 - **Requerido**: Sí
 
 #### `instance_type`
 
-- **Descripción**: Tipo de instancia EC2
+- **Descripción**: Tipo de instancia EC2.
+- **Tipo**: `string`
+- **Requerido**: Sí
+
+#### `key_pair`
+
+- **Descripción**: Nombre del key pair para acceso SSH.
+- **Tipo**: `string`
+- **Valor por defecto**: `null`
+- **Opcional**: Sí
+
+### Variables de Infraestructura
+
+#### `vpc_id`
+
+- **Descripción**: ID de la VPC donde se desplegará la instancia.
+- **Tipo**: `string`
+- **Requerido**: Sí
+
+#### `subnet_id`
+
+- **Descripción**: ID de la subnet donde se desplegará la instancia.
 - **Tipo**: `string`
 - **Requerido**: Sí
 
 #### `kms_key_arn`
 
-- **Descripción**: ARN de la llave KMS para cifrado
+- **Descripción**: ARN de la llave KMS para cifrado.
 - **Tipo**: `string`
 - **Requerido**: Sí
 
-#### `allowed_cidr`
+### Variables de Acceso y Seguridad
 
-- **Descripción**: Bloques CIDR permitidos para acceso
+#### `allowed_cidr`
+- **Descripción**: Bloques CIDR permitidos para acceso.
 - **Tipo**: `object`
 - **Valor por defecto**: `{}`
-- **Estructura**:
-
-```hcl
-object({
-all_traffic = optional(map(string), {})
-ssh = optional(map(string), {})
-})
-```
+- **Atributos**:
+  - **`all_traffic`**:
+    - **Tipo**: `map(string)`
+    - **Valor por defecto**: `{}`
+    - **Opcional**: Sí
+  - **`ssh`**:
+    - **Tipo**: `map(string)`
+    - **Valor por defecto**: `{}`
+    - **Opcional**: Sí
 
 #### `allowed_security_group`
-
-- **Descripción**: Grupos de seguridad permitidos para acceso
+- **Descripción**: Grupos de seguridad permitidos para acceso.
 - **Tipo**: `object`
 - **Valor por defecto**: `{}`
-- **Estructura**:
+- **Atributos**:
+  - **`all_traffic`**:
+    - **Tipo**: `map(string)`
+    - **Valor por defecto**: `{}`
+    - **Opcional**: Sí
+  - **`ssh`**:
+    - **Tipo**: `map(string)`
+    - **Valor por defecto**: `{}`
+    - **Opcional**: Sí
 
-```hcl
-object({
-all_traffic = optional(map(string), {})
-ssh = optional(map(string), {})
-})
-```
+### Variables de Servicios AWS
 
 #### `buckets`
-
-- **Descripción**: Mapa de buckets S3 y sus configuraciones
+- **Descripción**: Mapa de buckets S3 y sus configuraciones.
 - **Tipo**: `map(object)`
 - **Requerido**: Sí
-- **Estructura**:
-
-```hcl
-map(object({
-arn = string
-prefix = optional(string, "/")
-kms_key_arn = optional(string)
-}))
-```
+- **Atributos**:
+  - **`arn`**:
+    - **Tipo**: `string`
+    - **Requerido**: Sí
+  - **`prefix`**:
+    - **Tipo**: `string`
+    - **Valor por defecto**: `"/"`
+    - **Opcional**: Sí
+  - **`kms_key_arn`**:
+    - **Tipo**: `string`
+    - **Opcional**: Sí
 
 #### `queues`
-
-- **Descripción**: Mapa de colas SQS y sus configuraciones
+- **Descripción**: Mapa de colas SQS y sus configuraciones.
 - **Tipo**: `map(object)`
 - **Requerido**: Sí
-- **Estructura**:
-
-```hcl
-map(object({
-arn = string
-kms_key_arn = optional(string)
-}))
-```
+- **Atributos**:
+  - **`arn`**:
+    - **Tipo**: `string`
+    - **Requerido**: Sí
+  - **`kms_key_arn`**:
+    - **Tipo**: `string`
+    - **Opcional**: Sí
 
 #### `secrets`
-
-- **Descripción**: Configuración de secretos en Secrets Manager
+- **Descripción**: Configuración de secretos en Secrets Manager.
 - **Tipo**: `object`
 - **Requerido**: Sí
-- **Estructura**:
-
-```hcl
-object({
-interchange_database = object({
-arn = string
-kms_key_arn = optional(string)
-})
-})
-```
+- **Atributos**:
+  - **`interchange_database`**:
+    - **Tipo**: `object`
+    - **Atributos**:
+      - **`arn`**:
+        - **Tipo**: `string`
+        - **Requerido**: Sí
+      - **`kms_key_arn`**:
+        - **Tipo**: `string`
+        - **Opcional**: Sí
 
 #### `lambda`
-
-- **Descripción**: Configuración de funciones Lambda
+- **Descripción**: Configuración de funciones Lambda.
 - **Tipo**: `object`
 - **Requerido**: Sí
-- **Estructura**:
+- **Atributos**:
+  - **`send_mail`**:
+    - **Tipo**: `object`
+    - **Atributos**:
+      - **`arn`**:
+        - **Tipo**: `string`
+        - **Requerido**: Sí
 
-```hcl
-object({
-send_mail = object({
-arn = string
-})
-})
-```
-
-## Módulos Utilizados
+## Componentes y Módulos Utilizados
 
 | Módulo     | Fuente                                                       | Descripción            | Variables Requeridas                                                                                                                        |
 |------------|--------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
@@ -183,7 +186,7 @@ arn = string
 
 - Permiso para invocar la función Lambda de envío de correos
 
-## Dependencias entre Módulos
+## Dependencias del Módulo
 
 ```mermaid
 graph TD
@@ -256,7 +259,7 @@ module "application_server" {
 }
 ```
 
-## Notas Importantes
+## Consideraciones de Seguridad
 
 1. La instancia requiere una AMI compatible con los servicios que se utilizarán
 2. Se debe proporcionar una llave KMS para el cifrado de recursos

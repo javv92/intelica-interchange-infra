@@ -80,7 +80,7 @@ graph TD
     style A fill: #f9f, stroke: #333, stroke-width: 2px
 ```
 
-## Módulos Utilizados
+## Componentes y Módulos Utilizados
 
 | Módulo   | Fuente                                                            | Descripción                   |
 |----------|-------------------------------------------------------------------|-------------------------------|

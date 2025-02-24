@@ -61,7 +61,7 @@ El módulo crea las siguientes colas SQS:
 6. **scheme-fee** (`module.scheme-fee`)
     - Nombre: `{prefix_resource_name}-s3-scheme-fee-{stack_number}`
 
-## Módulos Utilizados
+## Componentes y Módulos Utilizados
 
 | Módulo   | Fuente                                                    | Descripción                  |
 |----------|-----------------------------------------------------------|------------------------------|

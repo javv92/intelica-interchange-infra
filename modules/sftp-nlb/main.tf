@@ -32,17 +32,21 @@ module "sft_server" {
   prefix_resource_name = var.prefix_resource_name
 
   name = var.name
-  # certificate_arn    = var.certificate_arn
-
 
   vpc_id                       = var.vpc_id
   load_balancer_arn            = module.sftp_nlb.load_balancer_arn
   load_balancer_security_group = module.sftp_nlb.security_group
-  port                         = 2222
-  protocol                     = "TCP"
-  target_port                  = 22
-  target_protocol              = "TCP"
-  target_ips = var.sftp_server_ips
+  listener = {
+    certificate_arn = var.certificate_arn
+    port            = 2222
+    protocol        = "TCP"
+  }
+  target = {
+    port     = 22
+    protocol = "TCP"
+    ips      = var.sftp_server_ips
+  }
+
   security_group = {
     ingress = merge(
       {for k, v in var.allowed_cidr : k => { cidr = v }},

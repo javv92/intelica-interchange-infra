@@ -91,7 +91,7 @@ El módulo crea las siguientes colas SQS:
 10. **UCIT** (`module.ucit`)
     - Nombre: `{prefix_resource_name}-{name}-ucit-{stack_number}`
 
-## Módulos Utilizados
+## Componentes y Módulos Utilizados
 
 | Módulo  | Fuente                                                    | Descripción                  |
 |---------|-----------------------------------------------------------|------------------------------|

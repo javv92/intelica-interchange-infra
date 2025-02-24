@@ -17,7 +17,7 @@ sftp = {
 }
 
 sftp_nlb = {
-  certificate_arn  = "arn:aws:acm:us-east-1:861276092327:certificate/39200c52-8ffd-4ac1-b59c-a9c71f1204c3"
+  # certificate_arn  = "arn:aws:acm:us-east-1:861276092327:certificate/39200c52-8ffd-4ac1-b59c-a9c71f1204c3"
   custom_host_name = "sftpx.dev.itx.intelica.com"
   hosted_zone_id   = "Z07319932HJTN65P3SNJ2"
   allowed_cidr = { public = "0.0.0.0/0" }

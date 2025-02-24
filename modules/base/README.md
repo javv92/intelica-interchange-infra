@@ -28,7 +28,7 @@ Crea una clave KMS que será utilizada por otros módulos para el cifrado de dat
 - **Tipo**: `string`
 - **Requerido**: Sí
 
-## Módulos Utilizados
+## Componentes y Módulos Utilizados
 
 | Módulo | Fuente | Descripción | Variables Requeridas |
 |--------|---------|-------------|---------------------|
