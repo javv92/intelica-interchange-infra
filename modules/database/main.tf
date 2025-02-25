@@ -15,8 +15,12 @@ module "cluster_rds_serverless" {
   kms_key_arn             = var.kms_key_arn
   vpc_id                  = var.vpc_id
   subnet_ids              = var.database_subnet_ids
-  allowed_security_groups = var.allowed_security_groups
-  allowed_cidr_blocks     = var.allowed_cidr_blocks
+  security_group = {
+    ingress = merge(
+      {for k, v in var.allowed_cidr : k => { cidr = v }},
+      {for k, v in var.allowed_security_group : k => { security_group = v }}
+    )
+  }
   db_cluster_parameters   = var.db_cluster_parameters
   engine_version          = "16.2"
 }

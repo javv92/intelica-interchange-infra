@@ -74,6 +74,8 @@ module "database" {
   database_subnet_ids  = var.restricted_subnet_ids
   snapshot_identifier  = var.database.snapshot_identifier
   vpc_id               = var.vpc_id
+  allowed_cidr = var.database.allowed_cidr
+  allowed_security_group = var.database.allowed_security_group
 }
 module "main_lambda" {
   source = "./modules/main-lambda"

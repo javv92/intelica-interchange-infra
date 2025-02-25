@@ -25,6 +25,7 @@ sftp_nlb = {
 
 database = {
   snapshot_identifier = "arn:aws:rds:us-east-1:818835242461:cluster-snapshot:app-interchange-aurora-priv-cluster-dev-cluster-04-02-2025-new"
+  allowed_cidr = { "FortiClient ingress" = "10.0.3.100/32" }
 }
 
 instance = {

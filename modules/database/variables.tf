@@ -41,16 +41,13 @@ variable "database_subnet_ids" {
   type = list(string)
 }
 
-variable "allowed_security_groups" {
-  description = "List of security group IDs allowed to connect to the cluster"
-  type = list(string)
-  default = []
+variable "allowed_cidr" {
+  type = map(string)
+  default = {}
 }
-
-variable "allowed_cidr_blocks" {
-  description = "List of CIDR blocks allowed to connect to the cluster"
-  type = list(string)
-  default = []
+variable "allowed_security_group" {
+  type = map(string)
+  default = {}
 }
 
 variable "db_cluster_parameters" {

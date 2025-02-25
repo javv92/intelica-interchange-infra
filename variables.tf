@@ -61,6 +61,8 @@ variable "sftp_nlb" {
 variable "database" {
   type = object({
     snapshot_identifier = string
+    allowed_cidr = optional(map(string), {})
+    allowed_security_group = optional(map(string), {})
   })
 }
 variable "instance" {
