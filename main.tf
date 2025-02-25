@@ -134,6 +134,10 @@ module "main_lambda" {
         arn         = module.main_queue.ucit_queue_arn
         kms_key_arn = module.main_queue.ucit_kms_key_arn
       }
+      upn = {
+        arn         = module.main_queue.upn_queue_arn
+        kms_key_arn = module.main_queue.upn_kms_key_arn
+      }
     }
   }
 }
@@ -252,6 +256,10 @@ module "instance" {
     ucit = {
       arn         = module.main_queue.ucit_queue_arn
       kms_key_arn = module.main_queue.ucit_kms_key_arn
+    }
+    upn = {
+      arn         = module.main_queue.upn_queue_arn
+      kms_key_arn = module.main_queue.upn_kms_key_arn
     }
   }
   lambda = {

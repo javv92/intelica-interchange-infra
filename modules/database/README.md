@@ -54,17 +54,17 @@ credenciales de conexión.
 - **Tipo**: `list(string)`
 - **Requerido**: Sí
 
-#### `allowed_security_groups`
+#### `allowed_cidr`
 
-- **Descripción**: Lista de IDs de grupos de seguridad permitidos para conectarse al cluster
-- **Tipo**: `list(string)`
-- **Valor por defecto**: `[]`
+- **Descripción**: Mapa de bloques CIDR permitidos para conectarse al cluster, donde la clave es un identificador y el valor es el CIDR
+- **Tipo**: `map(string)`
+- **Valor por defecto**: `{}`
 
-#### `allowed_cidr_blocks`
+#### `allowed_security_group`
 
-- **Descripción**: Lista de bloques CIDR permitidos para conectarse al cluster
-- **Tipo**: `list(string)`
-- **Valor por defecto**: `[]`
+- **Descripción**: Mapa de IDs de grupos de seguridad permitidos para conectarse al cluster, donde la clave es un identificador y el valor es el ID del grupo de seguridad
+- **Tipo**: `map(string)`
+- **Valor por defecto**: `{}`
 
 #### `db_cluster_parameters`
 
@@ -129,8 +129,13 @@ module "database" {
   vpc_id              = module.network.vpc_id
   database_subnet_ids = module.network.database_subnet_ids
 
-  allowed_security_groups = [module.ecs.task_security_group_id]
-  allowed_cidr_blocks = ["10.0.0.0/16"]
+  allowed_security_group = {
+    ecs_tasks = module.ecs.task_security_group_id
+  }
+
+  allowed_cidr = {
+    office_network = "10.0.0.0/16"
+  }
 
   db_cluster_parameters = [
     {

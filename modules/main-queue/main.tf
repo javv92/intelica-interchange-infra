@@ -94,3 +94,12 @@ module "ucit" {
   kms_key_arn          = var.kms_key_arn
   fifo                 = false
 }
+module "upn" {
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue"
+
+  name                 = "${var.name}-ucit"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  kms_key_arn          = var.kms_key_arn
+  fifo                 = false
+}

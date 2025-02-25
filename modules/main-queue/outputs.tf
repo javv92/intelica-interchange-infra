@@ -148,3 +148,18 @@ output "ucit_kms_key_arn" {
 output "ucit_queue_url" {
   value = module.ucit.queue_url
 }
+output "upn_queue_arn" {
+  value = module.upn.queue_arn
+}
+output "upn_queue_name" {
+  value = module.upn.queue_name
+}
+output "upn_queue_id" {
+  value = module.upn.queue_id
+}
+output "upn_kms_key_arn" {
+  value = module.upn.kms_key_arn
+}
+output "upn_queue_url" {
+  value = module.upn.queue_url
+}

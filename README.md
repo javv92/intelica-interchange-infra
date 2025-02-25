@@ -179,6 +179,14 @@ flowchart TD
     - **`snapshot_identifier`**:
         - **Tipo**: `string`
         - **Descripción**: Identificador del snapshot para restaurar la base de datos
+    - **`allowed_cidr`**:
+        - **Tipo**: `map(string)`
+        - **Valor por defecto**: `{}`
+        - **Descripción**: Mapa de CIDRs permitidos para acceder a la base de datos
+    - **`allowed_security_group`**:
+        - **Tipo**: `map(string)`
+        - **Valor por defecto**: `{}`
+        - **Descripción**: Mapa de security groups permitidos para acceder a la base de datos
 
 ### Variables de Instancia EC2
 
@@ -281,6 +289,8 @@ sftp_nlb = {
 
 database = {
   snapshot_identifier = "arn:aws:rds:region:account:cluster-snapshot:example-snapshot"
+  allowed_cidr = { office = "10.0.0.0/16" }
+  allowed_security_group = { app_servers = "sg-0123456789abcdef0" }
 }
 
 instance = {
