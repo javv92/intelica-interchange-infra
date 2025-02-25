@@ -36,6 +36,12 @@ El módulo implementa un secreto en AWS Secrets Manager con las siguientes carac
 - **Tipo**: `string`
 - **Requerido**: Sí
 
+## Componentes y Módulos Utilizados
+
+| Recurso  | Tipo    | Fuente                      | Descripción                    |
+|----------|---------|-----------------------------|--------------------------------|
+| `secret` | Recurso | Recurso nativo de Terraform | Secreto de AWS Secrets Manager |
+
 ## Recursos Creados
 
 El módulo crea el siguiente recurso:

@@ -76,6 +76,22 @@ El módulo implementa una función Lambda con las siguientes características pr
                 - **Tipo**: `string`
                 - **Descripción**: ARN de la llave KMS usada para cifrar el secreto
                 - **Requerido**: No
+                - 
+## Componentes y Módulos Utilizados
+
+| Recurso                              | Tipo    | Fuente                      | Descripción                                                      |
+|--------------------------------------|---------|-----------------------------|------------------------------------------------------------------|
+| `aws_iam_role`                       | Recurso | Recurso nativo de Terraform | Role IAM para la función Lambda                                  |
+| `aws_iam_role_policy`                | Recurso | Recurso nativo de Terraform | Política IAM para acceso a CloudWatch logs                       |
+| `aws_iam_role_policy`                | Recurso | Recurso nativo de Terraform | Política IAM para acceso a Secrets Manager y KMS                 |
+| `aws_iam_role_policy`                | Recurso | Recurso nativo de Terraform | Política IAM para interacción con recursos de VPC                |
+| `aws_lambda_layer_version`           | Recurso | Recurso nativo de Terraform | Capa Lambda con bibliotecas Python                               |
+| `aws_security_group`                 | Recurso | Recurso nativo de Terraform | Grupo de seguridad para la función Lambda en VPC                 |
+| `aws_vpc_security_group_egress_rule` | Recurso | Recurso nativo de Terraform | Regla de salida para todo el tráfico desde el grupo de seguridad |
+| `aws_lambda_function`                | Recurso | Recurso nativo de Terraform | Función Lambda para procesamiento de archivos en RDS             |
+| `aws_cloudwatch_event_rule`          | Recurso | Recurso nativo de Terraform | Regla de eventos para eventos de servidor SFTP                   |
+| `aws_cloudwatch_event_target`        | Recurso | Recurso nativo de Terraform | Configuración de destino Lambda para eventos SFTP                |
+| `aws_lambda_permission`              | Recurso | Recurso nativo de Terraform | Permisos para invocar Lambda desde EventBridge                   |
 
 ## Recursos Creados
 

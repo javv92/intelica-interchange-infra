@@ -106,6 +106,12 @@ El módulo implementa un servidor SFTP con las siguientes características princ
 - **Valor por defecto**: `{}`
 - **Requerido**: No
 
+## Componentes y Módulos Utilizados
+
+| Recurso       | Tipo   | Fuente                                                                                                                                                                    | Descripción                                               |
+|---------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| `sftp_server` | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-transfer-family//sftp-s3-server](https://github.com/ITL-ORG-INFRA/intelica-module-transfer-family/tree/main/sftp-s3-server) | Crea un servidor SFTP de AWS Tranfer Family de dominio S3 |
+
 ## Diagrama
 
 ```mermaid

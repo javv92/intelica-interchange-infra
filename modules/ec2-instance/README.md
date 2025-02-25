@@ -160,9 +160,13 @@ Crea una instancia EC2 con permisos para interactuar con varios servicios de AWS
 
 ## Componentes y Módulos Utilizados
 
-| Módulo     | Fuente                                                       | Descripción            | Variables Requeridas                                                                                                                        |
-|------------|--------------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| `instance` | `git@github.com:ITL-ORG-INFRA/intelica-module-ec2//instance` | Crea una instancia EC2 | - name<br>- stack_number<br>- prefix_resource_name<br>- ami<br>- instance_type<br>- vpc_id<br>- subnet_id<br>- security_group<br>- key_pair |
+| Recurso               | Tipo    | Fuente                                                                                                                                | Descripción                                      |
+|-----------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| `instance`            | Módulo  | [git@github.com:ITL-ORG-INFRA/intelica-module-ec2//instance](https://github.com/ITL-ORG-INFRA/intelica-module-ec2/tree/main/instance) | Instancia EC2 con configuración de seguridad     |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform                                                                                                           | Política IAM para acceso a Secrets Manager y KMS |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform                                                                                                           | Política IAM para acceso a buckets S3            |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform                                                                                                           | Política IAM para acceso a colas SQS             |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform                                                                                                           | Política IAM para invocar función Lambda         |
 
 ## Políticas IAM Creadas
 

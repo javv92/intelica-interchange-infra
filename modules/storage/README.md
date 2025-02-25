@@ -63,9 +63,9 @@ El módulo crea las siguientes colas SQS:
 
 ## Componentes y Módulos Utilizados
 
-| Módulo   | Fuente                                                    | Descripción                  |
-|----------|-----------------------------------------------------------|------------------------------|
-| `bucket` | `git@github.com:ITL-ORG-INFRA/intelica-module-s3//bucket` | Crea un bucket S3 individual |
+| Recurso  | Tipo   | Fuente                                                                                                                          | Descripción                  |
+|----------|--------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------|
+| `bucket` | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-s3//bucket](https://github.com/ITL-ORG-INFRA/intelica-module-s3/tree/main/bucket) | Crea un bucket S3 individual |
 
 ## Ejemplo de Uso
 

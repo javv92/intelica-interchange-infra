@@ -51,6 +51,15 @@ El módulo implementa una función Lambda con las siguientes características pr
                 - **Descripción**: ARN de la llave KMS usada para cifrar el secreto
                 - **Requerido**: No (opcional)
 
+## Componentes y Módulos Utilizados
+
+| Recurso               | Tipo    | Fuente                      | Descripción                                           |
+|-----------------------|---------|-----------------------------|-------------------------------------------------------|
+| `aws_iam_role`        | Recurso | Recurso nativo de Terraform | Role IAM para la función Lambda                       |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform | Política IAM para acceso a CloudWatch logs            |
+| `aws_iam_role_policy` | Recurso | Recurso nativo de Terraform | Política IAM para acceso a Secrets Manager y KMS      |
+| `aws_lambda_function` | Recurso | Recurso nativo de Terraform | Función Lambda con configuración de runtime y entorno |
+
 ## Diagrama
 
 ```mermaid

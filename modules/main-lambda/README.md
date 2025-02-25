@@ -73,6 +73,18 @@ El módulo implementa una función Lambda con las siguientes características pr
                 - **Descripción**: ARN de la llave KMS usada para cifrar la cola
                 - **Requerido**: No
 
+## Componentes y Módulos Utilizados
+
+| Recurso                      | Tipo    | Fuente                      | Descripción                                              |
+|------------------------------|---------|-----------------------------|----------------------------------------------------------|
+| `aws_iam_role`               | Recurso | Recurso nativo de Terraform | Role IAM para la función Lambda                          |
+| `aws_iam_role_policy`        | Recurso | Recurso nativo de Terraform | Política IAM para acceso a buckets S3 de origen          |
+| `aws_iam_role_policy`        | Recurso | Recurso nativo de Terraform | Política IAM para acceso a colas SQS de destino          |
+| `aws_iam_role_policy`        | Recurso | Recurso nativo de Terraform | Política IAM para acceso a CloudWatch logs               |
+| `aws_lambda_function`        | Recurso | Recurso nativo de Terraform | Función Lambda para procesamiento de archivos            |
+| `aws_s3_bucket_notification` | Recurso | Recurso nativo de Terraform | Configuración de notificación de buckets S3 hacia Lambda |
+| `aws_lambda_permission`      | Recurso | Recurso nativo de Terraform | Permisos para invocar Lambda desde buckets S3            |
+
 ## Diagrama
 
 ```mermaid

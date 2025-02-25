@@ -74,9 +74,10 @@ credenciales de conexión.
 
 ## Componentes y Módulos Utilizados
 
-| Módulo                   | Fuente                                                                | Descripción                                  | Variables Requeridas                                                                                                                                  |
-|--------------------------|-----------------------------------------------------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_rds_serverless` | `git@github.com:ITL-ORG-INFRA/intelica-module-rds//aurora-postgresql` | Crea un cluster Aurora PostgreSQL Serverless | - name<br>- stack_number<br>- prefix_resource_name<br>- kms_key_arn<br>- vpc_id<br>- subnet_ids<br>- allowed_security_groups<br>- allowed_cidr_blocks |
+| Recurso                     | Tipo    | Fuente                                                                                                                                                  | Descripción                                       |
+|-----------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| `aws_secretsmanager_secret` | Recurso | Recurso nativo de Terraform                                                                                                                             | Secret en Secrets Manager para credenciales de BD |
+| `cluster_rds_serverless`    | Módulo  | [git@github.com:ITL-ORG-INFRA/intelica-module-rds//aurora-postgresql](https://github.com/ITL-ORG-INFRA/intelica-module-rds/tree/main/aurora-postgresql) | Cluster Aurora PostgreSQL serverless              |
 
 ## Recursos Creados
 

@@ -39,6 +39,21 @@ El módulo crea diez colas SQS con las siguientes características:
 - **Tipo**: `string`
 - **Requerido**: Sí
 
+## Componentes y Módulos Utilizados
+
+| Recurso | Tipo   | Fuente                                                                                                                          | Descripción                           |
+|---------|--------|---------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| `btro`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para btro |
+| `cndo`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para cndo |
+| `ebgr`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para ebgr |
+| `fihn`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para fihn |
+| `fope`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para fope |
+| `gnmx`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para gnmx |
+| `inpe`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para inpe |
+| `sbpe`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para sbpe |
+| `sbsa`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para sbsa |
+| `ucit`  | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue](https://github.com/ITL-ORG-INFRA/intelica-module-sqs/tree/main/queue) | Cola SQS estándar (no FIFO) para ucit |
+
 ## Diagrama
 
 ```mermaid

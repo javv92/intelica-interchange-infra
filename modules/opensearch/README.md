@@ -82,9 +82,9 @@ graph TD
 
 ## Componentes y Módulos Utilizados
 
-| Módulo   | Fuente                                                            | Descripción                   |
-|----------|-------------------------------------------------------------------|-------------------------------|
-| `domain` | `git@github.com:ITL-ORG-INFRA/intelica-module-opensearch//domain` | Crea un dominio de OpenSearch |
+| Módulo   | Tipo   | Fuente                                                                                                                                          | Descripción                   |
+|----------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|
+| `domain` | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-opensearch//domain](https://github.com/ITL-ORG-INFRA/intelica-module-opensearch/tree/main/domain) | Crea un dominio de OpenSearch |
 
 ## Ejemplo de Uso
 

@@ -94,6 +94,13 @@ El módulo implementa una arquitectura SFTP con las siguientes características:
 - **Tipo**: `list(string)`
 - **Requerido**: Sí
 
+## Componentes y Módulos Utilizados
+
+| Recurso      | Tipo   | Fuente                                                                                                                                                                                                            | Descripción                                                                                                        |
+|--------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| `sftp_nlb`   | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-load-balancer//network-load-balancer](https://github.com/ITL-ORG-INFRA/intelica-module-load-balancer//tree/main/network-load-balancer)                              | Crea un balanceador de carga de tipo network                                                                       |
+| `sft_server` | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-load-balancer//network-load-balancer-ip-application](https://github.com/ITL-ORG-INFRA/intelica-module-load-balancer/tree/main/network-load-balancer-ip-application) | Crea un listener, target, group y demás para el funcionamiento de una aplicación de tipo ip detrás del balanceador |
+
 ## Diagrama
 
 ```mermaid

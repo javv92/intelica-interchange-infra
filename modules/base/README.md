@@ -30,9 +30,9 @@ Crea una clave KMS que será utilizada por otros módulos para el cifrado de dat
 
 ## Componentes y Módulos Utilizados
 
-| Módulo | Fuente | Descripción | Variables Requeridas |
-|--------|---------|-------------|---------------------|
-| `key` | `git@github.com:ITL-ORG-INFRA/intelica-module-kms//customer-key` | Crea una clave KMS personalizada | - name<br>- stack_number<br>- prefix_resource_name |
+| Recurso | Tipo   | Fuente                                                                                                                                        | Descripción                           |
+|---------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| `key`   | Módulo | [git@github.com:ITL-ORG-INFRA/intelica-module-kms//customer-key](https://github.com/ITL-ORG-INFRA/intelica-module-kms/tree/main/customer-key) | Clave KMS administrada por el cliente |
 
 ## Dependencias entre Módulos
 
