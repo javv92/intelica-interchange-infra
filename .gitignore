@@ -4,3 +4,6 @@
 errored.tfstate
 terraform.tfvars
 providers.tf
+/modules/fileload-lambda/src.zip
+/modules/main-lambda/src.zip
+/modules/send-mail-lambda/src.zip

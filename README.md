@@ -300,3 +300,103 @@ opensearch = {
   instance_count = 2
 }
 ```
+
+## Procedimientos
+
+### Agregar cola de cliente
+#### Creación de cola y captura de salidas
+1. Las colas de clientes se crean en el módulo [Main Queue](modules/main-queue), archivo [modules/main-queue/main.tf](modules/main-queue/main.tf), para agregar una nueva cola de cliente
+   con las configuración por defecto se debe crea un nuevo módulo como el siguiente:
+    ```hcl
+   #...
+    module "<COD_CLIENTE>" {
+        source = "git@github.com:ITL-ORG-INFRA/intelica-module-sqs//queue"
+        
+        name                 = "${var.name}-<COD_CLIENTE>"
+        stack_number         = var.stack_number
+        prefix_resource_name = var.prefix_resource_name
+        kms_key_arn          = var.kms_key_arn
+        fifo                 = false
+    }
+   #...
+    ```
+2. Configurar la salida del módulo [Main Queue](modules/main-queue), archivo [modules/main-queue/outputs.tf](modules/main-queue/outputs.tf), para poder utilizar sus datos (arn y kms, entre otros), por ejemplo
+    ```hcl
+    #...
+    output "<COD_CLIENTE>_queue_arn" {
+      value = module.<COD_CLIENTE>.queue_arn
+    }
+    output "<COD_CLIENTE>_queue_name" {
+      value = module.<COD_CLIENTE>.queue_name
+    }
+    output "<COD_CLIENTE>_queue_id" {
+      value = module.<COD_CLIENTE>.queue_id
+    }
+    output "<COD_CLIENTE>_kms_key_arn" {
+      value = module.<COD_CLIENTE>.kms_key_arn
+    }
+    output "<COD_CLIENTE>_queue_url" {
+      value = module.<COD_CLIENTE>.queue_url
+    }
+    #...
+    ```
+3. Desplegar con `terraform apply` y se crearán las colas SQS
+
+#### Configuración de Lambda de captura de eventos de S3 y notificaciones a las colas
+
+1. Actualizar los parámetros del módulo [Main Lambda](modules/main_lambda), archivo [mainf.tf](main.tf), para indicarle que tome fuente de eventos
+   las colas, y pueda leer y procesar los mensajes de la nueva cola, para esto se utiliza la variable `targets.queues`, por ejemplo:
+   ```hcl 
+    module "main_lambda" {
+        source = "./modules/main-lambda"
+        
+        stack_number         = var.stack_number
+        prefix_resource_name = var.prefix_resource_name
+        name                 = "app"    
+        #...
+        targets = {
+            queues = {
+                "<COD_CLIENTE>" = { # este nombre es importante, ya que debe coincidir con la carpeta en donde se almacena el archivo, la función lambda toma la primera carpeta en donde está el archivo para identificar la cola a enviar el mensaje
+                    arn         = module.main_queue.<COD_CLIENTE>_queue_arn
+                    kms_key_arn = module.main_queue.<COD_CLIENTE>_kms_key_arn
+                }
+            }
+        }
+    }
+   #...
+    ``` 
+2. Desplegar con `terraform apply` y se realizará lo siguiente:
+    * Se actualizarán los permisos para que la función lambda pueda enviar mensajes a la cola SQS, permisos de SQS y
+      KMS en caso se indique
+    * Se configurará la información necesaria para que la función lambda utilice la cola se configura
+      automáticamente en las
+      variables de entorno
+        * `QUEUES_URL_MAP`, que tiene el siguiente formato
+           ```json
+           {"<COD_CLIENTE>":"<COLA_CLIENTE_URL>"}  
+           ```
+#### Configuración de Instancia EC2 para que lea mensajes de la cola y los procese
+
+1. Actualizar los parámetros del módulo [Instance](modules/ec2-instance), archivo [mainf.tf](main.tf), para indicarle que tome como fuente de eventos
+    las colas, y pueda leer y procesar los mensajes de la nueva cola, para esto se utiliza la variable `targets.queues`, por ejemplo:
+   ```hcl 
+    module "instance" {
+      source               = "./modules/ec2-instance"
+      stack_number         = var.stack_number
+      prefix_resource_name = var.prefix_resource_name
+      name                 = "app"
+      #...
+      targets = {
+          queues = {
+              "<COD_CLIENTE>" = {
+                  arn         = module.main_queue.<COD_CLIENTE>_queue_arn
+                  kms_key_arn = module.main_queue.<COD_CLIENTE>_kms_key_arn
+              }
+          }
+      }
+      #...
+    }
+   ```
+2. Desplegar con `terraform apply` y se realizará lo siguiente:
+    * Se actualizarán los permisos para que la instancia pueda recibir y eliminar mensajes a la cola SQS, permisos de SQS y
+      KMS en caso se indique
