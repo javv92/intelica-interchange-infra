@@ -1,4 +1,4 @@
-# AWS Infrastructure Documentation
+# Intelica Intercambio
 
 Esta infraestructura despliega una solución completa para el procesamiento de archivos y datos
 
@@ -119,6 +119,10 @@ flowchart TD
 - **Descripción**: Configuración del servidor SFTP.
 - **Tipo**: `object`
 - **Atributos**:
+    - **`enabled`**:
+        - **Tipo**: `bool`
+        - **Valor por defecto**: `true`
+        - **Descripción**: Habilita o deshabilita el despliegue del servidor SFTP
     - **`subnet`**:
         - **Tipo**: `string`
         - **Descripción**: ID de la subred para el servidor SFTP
@@ -148,6 +152,10 @@ flowchart TD
 - **Descripción**: Configuración del Network Load Balancer para SFTP.
 - **Tipo**: `object`
 - **Atributos**:
+    - **`enabled`**:
+        - **Tipo**: `bool`
+        - **Valor por defecto**: `true`
+        - **Descripción**: Habilita o deshabilita el despliegue del NLB
     - **`certificate_arn`**:
         - **Tipo**: `string`
         - **Valor por defecto**: `null`
@@ -274,6 +282,7 @@ public_subnet_ids = ["subnet-0123456789abcdef2", "subnet-0123456789abcdef3"]
 restricted_subnet_ids = ["subnet-0123456789abcdef4", "subnet-0123456789abcdef5"]
 
 sftp = {
+  enabled           = true
   subnet           = "subnet-0123456789abcdef0"
   certificate_arn  = "arn:aws:acm:region:account:certificate/12345678-1234-1234-1234-123456789012"
   custom_host_name = "sftp.example.com"
@@ -282,6 +291,7 @@ sftp = {
 }
 
 sftp_nlb = {
+  enabled           = true
   certificate_arn  = "arn:aws:acm:region:account:certificate/12345678-1234-1234-1234-123456789012"
   custom_host_name = "sftp-nlb.example.com"
   hosted_zone_id   = "Z1234567890ABCDEF"
@@ -354,7 +364,7 @@ opensearch = {
 
 #### Configuración de Lambda de captura de eventos de S3 y notificaciones a las colas
 
-1. Actualizar los parámetros del módulo [Main Lambda](modules/main_lambda), archivo [mainf.tf](main.tf), para indicarle que tome fuente de eventos
+1. Actualizar los parámetros del módulo [Main Lambda](modules/main-lambda), archivo [main.tf](main.tf), para indicarle que tome fuente de eventos
    las colas, y pueda leer y procesar los mensajes de la nueva cola, para esto se utiliza la variable `targets.queues`, por ejemplo:
    ```hcl 
     module "main_lambda" {
@@ -387,8 +397,8 @@ opensearch = {
            ```
 #### Configuración de Instancia EC2 para que lea mensajes de la cola y los procese
 
-1. Actualizar los parámetros del módulo [Instance](modules/ec2-instance), archivo [mainf.tf](main.tf), para indicarle que tome como fuente de eventos
-    las colas, y pueda leer y procesar los mensajes de la nueva cola, para esto se utiliza la variable `targets.queues`, por ejemplo:
+1. Actualizar los parámetros del módulo [Instance](modules/ec2-instance), archivo [main.tf](main.tf), para indicarle que tome como fuente de eventos
+   las colas, y pueda leer y procesar los mensajes de la nueva cola, para esto se utiliza la variable `queues`, por ejemplo:
    ```hcl 
     module "instance" {
       source               = "./modules/ec2-instance"
@@ -396,12 +406,10 @@ opensearch = {
       prefix_resource_name = var.prefix_resource_name
       name                 = "app"
       #...
-      targets = {
-          queues = {
-              "<COD_CLIENTE>" = {
-                  arn         = module.main_queue.<COD_CLIENTE>_queue_arn
-                  kms_key_arn = module.main_queue.<COD_CLIENTE>_kms_key_arn
-              }
+      queues = {
+          "<COD_CLIENTE>" = {
+              arn         = module.main_queue.<COD_CLIENTE>_queue_arn
+              kms_key_arn = module.main_queue.<COD_CLIENTE>_kms_key_arn
           }
       }
       #...
