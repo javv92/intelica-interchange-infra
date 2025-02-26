@@ -172,3 +172,13 @@ resource "aws_lambda_permission" "event_bridge" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.sft_event_rule.arn
 }
+
+resource "aws_vpc_security_group_ingress_rule" "file_load_lambda_to_database_security_group_ingress" {
+  security_group_id            = var.database_security_group
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.security_group.id
+  description                  = "access to lambda function ${aws_lambda_function.function.function_name}"
+  tags = { Name : aws_lambda_function.function.function_name }
+}

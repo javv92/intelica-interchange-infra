@@ -45,3 +45,7 @@ variable "secrets" {
     })
   })
 }
+
+variable database_security_group {
+  type = string
+}

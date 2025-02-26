@@ -41,6 +41,7 @@ variable "restricted_subnet_ids" {
 }
 variable "sftp" {
   type = object({
+    enabled = optional(bool, true)
     subnet = string
     certificate_arn = optional(string, null)
     custom_host_name = optional(string, null)
@@ -51,6 +52,7 @@ variable "sftp" {
 }
 variable "sftp_nlb" {
   type = object({
+    enabled = optional(bool, true)
     certificate_arn = optional(string, null)
     custom_host_name = optional(string, null)
     hosted_zone_id = optional(string, null)

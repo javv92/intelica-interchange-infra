@@ -15,6 +15,7 @@ module "storage" {
 
 module "sftp" {
   source = "./modules/sftp"
+  count  = var.sftp.enabled ? 1 : 0
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -37,6 +38,7 @@ module "sftp" {
 }
 module "sftp_nlb" {
   source = "./modules/sftp-nlb"
+  count = (var.sftp_nlb.enabled && length(module.sftp) > 0) ? 1 : 0
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -50,7 +52,7 @@ module "sftp_nlb" {
   hosted_zone_id         = var.sftp_nlb.hosted_zone_id
   allowed_cidr           = var.sftp.allowed_cidr
   allowed_security_group = var.sftp.allowed_security_group
-  sftp_server_ips        = module.sftp.server_ips
+  sftp_server_ips        = module.sftp[0].server_ips
 
   depends_on = [module.sftp]
 
@@ -67,14 +69,14 @@ module "main_queue" {
 module "database" {
   source = "./modules/database"
 
-  stack_number         = var.stack_number
-  prefix_resource_name = var.prefix_resource_name
-  name                 = "app"
-  kms_key_arn          = module.base.key_arn
-  database_subnet_ids  = var.restricted_subnet_ids
-  snapshot_identifier  = var.database.snapshot_identifier
-  vpc_id               = var.vpc_id
-  allowed_cidr = var.database.allowed_cidr
+  stack_number           = var.stack_number
+  prefix_resource_name   = var.prefix_resource_name
+  name                   = "app"
+  kms_key_arn            = module.base.key_arn
+  database_subnet_ids    = var.restricted_subnet_ids
+  snapshot_identifier    = var.database.snapshot_identifier
+  vpc_id                 = var.vpc_id
+  allowed_cidr           = var.database.allowed_cidr
   allowed_security_group = var.database.allowed_security_group
 }
 module "main_lambda" {
@@ -134,19 +136,17 @@ module "main_lambda" {
         arn         = module.main_queue.ucit_queue_arn
         kms_key_arn = module.main_queue.ucit_kms_key_arn
       }
-      upn = {
-        arn         = module.main_queue.upn_queue_arn
-        kms_key_arn = module.main_queue.upn_kms_key_arn
-      }
     }
   }
 }
 module "fileload-lambda" {
   source               = "./modules/fileload-lambda"
+  count = length(module.sftp) > 0 ? 1 : 0
+
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
   name                 = "file-load"
-  sftp_server_id       = module.sftp.server_id
+  sftp_server_id       = module.sftp[0].server_id
   secrets = {
     interchange_database = {
       arn         = module.database.secret_arn
@@ -156,15 +156,9 @@ module "fileload-lambda" {
   bucket_name = module.storage.landing_bucket_name
   subnet_ids  = var.private_subnet_ids
   vpc_id      = var.vpc_id
-}
-resource "aws_vpc_security_group_ingress_rule" "file_load_lambda_to_database_security_group_ingress" {
-  security_group_id            = module.database.security_group_id
-  from_port                    = 5432
-  to_port                      = 5432
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = module.fileload-lambda.security_group_id
-  description                  = "access to lambda function ${module.fileload-lambda.function_name}"
-  tags = { Name : module.fileload-lambda.function_name }
+  database_security_group = module.database.security_group_id
+
+  depends_on = [module.sftp]
 }
 
 
@@ -256,10 +250,6 @@ module "instance" {
     ucit = {
       arn         = module.main_queue.ucit_queue_arn
       kms_key_arn = module.main_queue.ucit_kms_key_arn
-    }
-    upn = {
-      arn         = module.main_queue.upn_queue_arn
-      kms_key_arn = module.main_queue.upn_kms_key_arn
     }
   }
   lambda = {
