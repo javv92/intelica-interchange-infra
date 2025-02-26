@@ -52,3 +52,12 @@ output "structured_bucket_arn" {
 output "structured_bucket_kms_key_arn" {
   value = module.structured.kms_key_arn
 }
+output "scheme_fee_bucket_name" {
+  value = module.scheme-fee.s3_bucket_id
+}
+output "scheme_fee_bucket_arn" {
+  value = module.scheme-fee.s3_bucket_arn
+}
+output "scheme_fee_bucket_kms_key_arn" {
+  value = module.scheme-fee.kms_key_arn
+}

@@ -209,6 +209,10 @@ module "instance" {
       arn         = module.storage.structured_bucket_arn
       kms_key_arn = module.storage.structured_bucket_kms_key_arn
     }
+    "scheme-fee" = {
+      arn         = module.storage.scheme_fee_bucket_arn
+      kms_key_arn = module.storage.scheme_fee_bucket_kms_key_arn
+    }
   }
   queues = {
     btro = {
