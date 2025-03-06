@@ -192,7 +192,7 @@ if __name__ == "__main__":
             event_payload_json = json.dumps(send_email)
             print(">> Invoke Lambda to send email")
             print("invoke lamnda...")
-            invoke_lambda(os.getenv("SEND_MAIN_LAMBDA_NAME"), event_payload_json)
+            invoke_lambda(os.getenv("SEND_MAIL_LAMBDA_NAME"), event_payload_json)
             print("invoke lamnda success!")
         else:
             print(">> THERE ARE NO ITEMS TO REPORT.")

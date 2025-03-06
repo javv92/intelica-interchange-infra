@@ -43,7 +43,7 @@ son los siguientes:
 - USER_NOTIFICATION_AWS_ACCESS_KEY
 - SECRET_RDS
 - REGION_NAME
-- SEND_MAIN_LAMBDA_NAME # gregado
+- SEND_MAIL_LAMBDA_NAME # gregado
 
 ### Errores
 
