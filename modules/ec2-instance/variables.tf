@@ -85,3 +85,15 @@ variable "lambda" {
     })
   })
 }
+
+variable "devops" {
+  type = object({
+    artifact_bucket = object({
+      arn = string
+      prefix = optional(string, "/")
+      kms_key_arn = optional(string)
+    })
+  })
+  nullable = true
+  default  = null
+}

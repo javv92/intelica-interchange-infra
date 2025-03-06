@@ -81,7 +81,6 @@ resource "aws_iam_role_policy" "s3_policy" {
           Resource = [
             for bucket in var.buckets :join("/", compact(split("/", "${bucket.arn}/${bucket.prefix}*")))
           ]
-          # Resource = [for bucket in var.sources.buckets : replace("${bucket.arn}/${bucket.prefix}*", "//", "/")]
         },
         {
           Effect = "Allow"
@@ -148,6 +147,51 @@ resource "aws_iam_role_policy" "lambda_policy" {
           Resource = toset([var.lambda.send_mail.arn])
         }
       ]
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "devops_artifact_policy" {
+  count = var.devops.artifact_bucket != null ? 1 : 0
+  name  = "${module.instance.role_name}-s3-devops-artifact-pol"
+  role  = module.instance.role_name
+
+  policy = jsonencode(
+    {
+      Version = "2012-10-17",
+      Statement = concat(
+        [
+          {
+            Action = [
+              "s3:List*"
+            ],
+            Effect = "Allow",
+            Resource = [
+              var.devops.artifact_bucket.arn
+            ]
+          },
+          {
+            Action = [
+              "s3:Get*"
+            ],
+            Effect = "Allow",
+            Resource = [
+              join("/", compact(split("/", "${var.devops.artifact_bucket.arn}/${var.devops.artifact_bucket.prefix}*")))
+            ]
+          }
+        ],
+          var.devops.artifact_bucket.kms_key_arn != null ? [
+          {
+            Effect = "Allow"
+            Action = [
+              "kms:Decrypt",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey",
+            ]
+            Resource = toset([var.devops.artifact_bucket.kms_key_arn])
+          }
+        ] : []
+      )
     }
   )
 }

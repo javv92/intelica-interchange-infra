@@ -90,3 +90,15 @@ variable "opensearch" {
     instance_count = optional(number, 1)
   })
 }
+
+variable "devops" {
+  type = object({
+    artifact_bucket = object({
+      arn = string
+      prefix = optional(string, "/")
+      kms_key_arn = optional(string)
+    })
+  })
+  nullable = true
+  default  = null
+}

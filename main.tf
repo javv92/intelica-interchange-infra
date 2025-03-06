@@ -38,7 +38,7 @@ module "sftp" {
 }
 module "sftp_nlb" {
   source = "./modules/sftp-nlb"
-  count = (var.sftp_nlb.enabled && length(module.sftp) > 0) ? 1 : 0
+  count  = (var.sftp_nlb.enabled && length(module.sftp) > 0) ? 1 : 0
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -140,8 +140,8 @@ module "main_lambda" {
   }
 }
 module "fileload-lambda" {
-  source               = "./modules/fileload-lambda"
-  count = length(module.sftp) > 0 ? 1 : 0
+  source = "./modules/fileload-lambda"
+  count  = length(module.sftp) > 0 ? 1 : 0
 
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
@@ -153,9 +153,9 @@ module "fileload-lambda" {
       kms_key_arn = module.database.secret_kms_key_id
     }
   }
-  bucket_name = module.storage.landing_bucket_name
-  subnet_ids  = var.private_subnet_ids
-  vpc_id      = var.vpc_id
+  bucket_name             = module.storage.landing_bucket_name
+  subnet_ids              = var.private_subnet_ids
+  vpc_id                  = var.vpc_id
   database_security_group = module.database.security_group_id
 
   depends_on = [module.sftp]
@@ -176,6 +176,7 @@ module "instance" {
   key_pair               = var.instance.key_pair
   allowed_cidr           = var.instance.allowed_cidr
   allowed_security_group = var.instance.allowed_security_group
+
 
   secrets = {
     interchange_database = {
@@ -261,6 +262,7 @@ module "instance" {
       arn = module.sendmail-lambda.function_arn
     }
   }
+  devops = var.devops
 }
 
 resource "aws_vpc_security_group_ingress_rule" "instance_to_database_security_group_ingress" {
@@ -301,3 +303,14 @@ module "opensearch" {
   storage_size         = var.opensearch.storage_size
   instance_count       = var.opensearch.instance_count
 }
+
+# module "ec2-devops" {
+#   count = var.devops.cross_account != null ? 1 : 0
+#
+#   source = "./modules/devops-cross-account"
+#
+#   stack_number         = var.stack_number
+#   prefix_resource_name = var.prefix_resource_name
+#   name           = "ec2-app"
+#   account_id = var.devops.cross_account.account_id
+# }
