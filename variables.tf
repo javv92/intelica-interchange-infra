@@ -91,8 +91,9 @@ variable "opensearch" {
   })
 }
 
-variable "devops" {
+variable devops {
   type = object({
+    devops_account = optional(string, null)
     artifact_bucket = object({
       arn = string
       prefix = optional(string, "/")

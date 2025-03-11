@@ -53,8 +53,10 @@ opensearch = {
 }
 
 devops = {
-    artifact_bucket = {
-      arn = "arn:aws:s3:::itl-0004-itx-dev"
-      # kms_key_arn = optional(string)
-    }
+  devops_account = "423623846320"
+  artifact_bucket = {
+    arn         = "arn:aws:s3:::itl-0009-devops-all-s3-main-01"
+    prefix      = "/app-interchange/"
+    kms_key_arn = "arn:aws:kms:us-east-1:423623846320:key/aad084a6-8100-48ba-b0f7-13303679266c"
+  }
 }

@@ -4,6 +4,9 @@ module "base" {
   name                 = "general"
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
+  kms_key_decrypt_only_account_ids = concat(
+      var.devops != null ? [var.devops.devops_account] : []
+  )
 }
 module "storage" {
   source = "./modules/storage"
@@ -78,6 +81,9 @@ module "database" {
   vpc_id                 = var.vpc_id
   allowed_cidr           = var.database.allowed_cidr
   allowed_security_group = var.database.allowed_security_group
+  secret_read_only_account_ids = concat(
+      var.devops != null ? [var.devops.devops_account] : []
+  )
 }
 module "main_lambda" {
   source = "./modules/main-lambda"
@@ -86,6 +92,7 @@ module "main_lambda" {
   prefix_resource_name = var.prefix_resource_name
   name                 = "app"
 
+  kms_key_arn = module.base.key_arn
   sources = {
     buckets = {
       landing = {
@@ -146,6 +153,7 @@ module "fileload-lambda" {
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
   name                 = "file-load"
+  kms_key_arn          = module.base.key_arn
   sftp_server_id       = module.sftp[0].server_id
   secrets = {
     interchange_database = {
@@ -262,7 +270,6 @@ module "instance" {
       arn = module.sendmail-lambda.function_arn
     }
   }
-  devops = var.devops
 }
 
 resource "aws_vpc_security_group_ingress_rule" "instance_to_database_security_group_ingress" {
@@ -286,6 +293,7 @@ module "sendmail-lambda" {
   stack_number         = var.stack_number
   prefix_resource_name = var.prefix_resource_name
   name                 = "sendmail"
+  kms_key_arn          = module.base.key_arn
   secrets = {
     smtp = {
       arn         = module.smtp.secret_arn
@@ -302,15 +310,29 @@ module "opensearch" {
   instance_type        = var.opensearch.instance_type
   storage_size         = var.opensearch.storage_size
   instance_count       = var.opensearch.instance_count
+  secret_read_only_account_ids = concat(
+      var.devops != null ? [var.devops.devops_account] : []
+  )
 }
 
-# module "ec2-devops" {
-#   count = var.devops.cross_account != null ? 1 : 0
-#
-#   source = "./modules/devops-cross-account"
-#
-#   stack_number         = var.stack_number
-#   prefix_resource_name = var.prefix_resource_name
-#   name           = "ec2-app"
-#   account_id = var.devops.cross_account.account_id
-# }
+module "devops" {
+  count                = var.devops != null ? 1 : 0
+  source               = "./modules/devops"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+
+  name            = "devops"
+  artifact_bucket = var.devops.artifact_bucket
+  devops_account  = var.devops.devops_account
+  ec2_app = {
+    instance_role = module.instance.instance_role
+    deployments = {
+      main = {
+        tags = { Name = module.instance.instance_name }
+      }
+    }
+  }
+  main_lambda = {
+    function_arn = module.main_lambda.function_arn
+  }
+}

@@ -21,6 +21,30 @@ variable "prefix_resource_name" {
 variable "name" {
   type = string
 }
-variable "account_id" {
+variable ec2_app {
+  type = object({
+    instance_role = string
+    deployments = optional(map(object({
+      config_name = optional(string, "CodeDeployDefault.AllAtOnce")
+      tags = optional(map(string), {})
+    })), {})
+  })
+}
+
+variable main_lambda {
+  type = object({
+    function_arn = string
+  })
+}
+
+variable devops_account {
   type = string
+}
+
+variable "artifact_bucket" {
+  type = object({
+    arn = string
+    prefix = optional(string, "/")
+    kms_key_arn = optional(string)
+  })
 }

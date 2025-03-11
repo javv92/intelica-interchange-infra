@@ -21,7 +21,9 @@ variable "prefix_resource_name" {
 variable "name" {
   type = string
 }
-
+variable "kms_key_arn" {
+  type = string
+}
 variable "sources" {
   type = object({
     buckets = map(object({

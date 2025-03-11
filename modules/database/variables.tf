@@ -55,3 +55,9 @@ variable "db_cluster_parameters" {
   type = list(map(string))
   default = []
 }
+
+
+variable "secret_read_only_account_ids" {
+  type = list(string)
+  default = []
+}

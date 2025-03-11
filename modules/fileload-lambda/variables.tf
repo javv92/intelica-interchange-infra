@@ -25,6 +25,9 @@ variable "vpc_id" {
   description = "VPC ID where the AD Connector will be created"
   type        = string
 }
+variable "kms_key_arn" {
+  type = string
+}
 variable "subnet_ids" {
   description = "List of Subnet IDs for the AD Connector"
   type = list(string)

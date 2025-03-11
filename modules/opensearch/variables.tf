@@ -43,3 +43,8 @@ variable "instance_count" {
   type    = number
   default = 1
 }
+
+variable "secret_read_only_account_ids" {
+  type = list(string)
+  default = []
+}

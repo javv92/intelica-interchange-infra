@@ -135,6 +135,7 @@ resource "aws_lambda_function" "function" {
       })
     }
   }
+  kms_key_arn = var.kms_key_arn
 }
 
 resource "aws_s3_bucket_notification" "bucket_lambda_trigger" {

@@ -4,3 +4,10 @@ output "security_group_id" {
 output "instance_name" {
   value = module.instance.instance_name
 }
+
+output "instance_role_arn" {
+  value = module.instance.role_arn
+}
+output "instance_role" {
+  value = module.instance.role_name
+}

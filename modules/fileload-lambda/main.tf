@@ -138,6 +138,7 @@ resource "aws_lambda_function" "function" {
       BUCKET_NAME                     = var.bucket_name
     }
   }
+  kms_key_arn = var.kms_key_arn
   layers = [
     aws_lambda_layer_version.lambda_layer.arn,
     "arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python310:16"

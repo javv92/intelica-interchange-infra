@@ -22,3 +22,7 @@ variable "name" {
   description = "Required - the prefix name is used to name the resources {coid}-{assetid}-{appid} or applying-000-terraform"
   type        = string
 }
+variable "kms_key_decrypt_only_account_ids" {
+  type = list(string)
+  default = []
+}

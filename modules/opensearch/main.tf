@@ -11,4 +11,5 @@ module "domain" {
   engine_version       = var.engine_version
   storage_size       = var.storage_size
   instance_count       = var.instance_count
+  secret_read_only_account_ids = var.secret_read_only_account_ids
 }

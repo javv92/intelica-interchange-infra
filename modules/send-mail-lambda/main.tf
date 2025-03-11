@@ -83,4 +83,6 @@ resource "aws_lambda_function" "function" {
       SMTP_SECRET_ARN = var.secrets.smtp.arn
     }
   }
+
+  kms_key_arn = var.kms_key_arn
 }

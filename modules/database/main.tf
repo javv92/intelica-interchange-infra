@@ -1,6 +1,5 @@
 module "cluster_rds_serverless" {
   # source = "../../../../modules/intelica-module-rds/aurora-postgresql"
-
   source = "git@github.com:ITL-ORG-INFRA/intelica-module-rds//aurora-postgresql"
 
   name                 = var.name
@@ -19,4 +18,5 @@ module "cluster_rds_serverless" {
   }
   db_cluster_parameters   = var.db_cluster_parameters
   engine_version          = "16.2"
+  secret_read_only_account_ids = var.secret_read_only_account_ids
 }
