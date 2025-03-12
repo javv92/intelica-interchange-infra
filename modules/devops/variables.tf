@@ -34,6 +34,7 @@ variable ec2_app {
 variable main_lambda {
   type = object({
     function_arn = string
+    kms_key_arn = optional(string)
   })
 }
 

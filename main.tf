@@ -334,5 +334,6 @@ module "devops" {
   }
   main_lambda = {
     function_arn = module.main_lambda.function_arn
+    kms_key_arn = module.main_lambda.kms_key_arn
   }
 }

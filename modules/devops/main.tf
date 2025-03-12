@@ -1,5 +1,6 @@
-# KMS
-
+locals {
+  devops_role_name = "${var.prefix_resource_name}-iam-${var.name}-${var.stack_number}"
+}
 # EC2 APP
 module "ec2_app_application" {
   source               = "../../../../modules/intelica-module-codedeploy/application"
@@ -23,9 +24,8 @@ module "ec2_app_deployment_group" {
 }
 
 resource "aws_iam_role_policy" "app_ec2_devops_artifact_policy" {
-  count = var.artifact_bucket != null ? 1 : 0
-  name  = "s3-devops-artifact-pol"
-  role  = var.ec2_app.instance_role
+  name = "s3-devops-artifact-pol"
+  role = var.ec2_app.instance_role
 
   policy = jsonencode(
     {
@@ -67,25 +67,123 @@ resource "aws_iam_role_policy" "app_ec2_devops_artifact_policy" {
   )
 }
 
-# MAIN LAMBDA FUNCTION
-resource "aws_lambda_permission" "main_lambda_update_code" {
-  statement_id  = "AllowUpdateFromDevopsAccount"
-  action        = "lambda:UpdateFunctionCode"
-  function_name = var.main_lambda.function_arn
-  principal     = "arn:aws:iam::${var.devops_account}:root"
+resource "aws_iam_role" "role" {
+  name = local.devops_role_name
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${var.devops_account}:root"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_deploy" {
+  name = "lambda_deploy"
+  role = aws_iam_role.role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = concat([
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:UpdateFunctionCode",
+          "lambda:GetFunction"
+        ]
+        Resource = [var.main_lambda.function_arn]
+      }
+    ],
+        var.main_lambda.kms_key_arn != null ? [
+        {
+          Effect = "Allow"
+          Action = [
+            "kms:Decrypt",
+            "kms:GenerateDataKey*",
+            "kms:DescribeKey",
+          ]
+          Resource = toset([var.main_lambda.kms_key_arn])
+        }
+      ] : [])
+  })
 }
 
 
-resource "aws_lambda_permission" "main_lambda_get_lambda" {
-  statement_id  = "AllowGetFunctionFromAnotherAccount"
-  action        = "lambda:GetFunction"
-  function_name = var.main_lambda.function_arn
-  principal     = "arn:aws:iam::${var.devops_account}:root"
+resource "aws_iam_role_policy" "code_deploy" {
+  name = "codedeploy_deploy"
+  role = aws_iam_role.role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "codedeploy:CreateDeployment",
+          "codedeploy:GetDeployment",
+          "codedeploy:GetDeploymentConfig",
+          "codedeploy:GetApplicationRevision",
+          "codedeploy:RegisterApplicationRevision",
+          "codedeploy:GetApplication"
+        ]
+        Resource = concat(
+          [
+            module.ec2_app_application.application_arn,
+            "arn:aws:codedeploy:*:*:deploymentconfig:*"
+          ],
+          [for deployment in module.ec2_app_deployment_group : deployment.deployment_group_arn]
+        )
+      }
+    ]
+  })
 }
 
-resource "aws_lambda_permission" "main_lambda_update_conf" {
-  statement_id  = "AllowUpdateConfigFromAnotherAccount"
-  action        = "lambda:UpdateFunctionConfiguration"
-  function_name = var.main_lambda.function_arn
-  principal     = "arn:aws:iam::${var.devops_account}:root"
+resource "aws_iam_role_policy" "code_deploy_devops_artifact_policy" {
+  name = "s3-devops-artifact-pol"
+  role = aws_iam_role.role.id
+
+  policy = jsonencode(
+    {
+      Version = "2012-10-17",
+      Statement = concat(
+        [
+          {
+            Action = [
+              "s3:List*"
+            ],
+            Effect = "Allow",
+            Resource = [
+              var.artifact_bucket.arn
+            ]
+          },
+          {
+            Action = [
+              "s3:Get*"
+            ],
+            Effect = "Allow",
+            Resource = [
+              join("/", compact(split("/", "${var.artifact_bucket.arn}/${var.artifact_bucket.prefix}*")))
+            ]
+          }
+        ],
+          var.artifact_bucket.kms_key_arn != null ? [
+          {
+            Effect = "Allow"
+            Action = [
+              "kms:Decrypt",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey",
+            ]
+            Resource = toset([var.artifact_bucket.kms_key_arn])
+          }
+        ] : []
+      )
+    }
+  )
 }
