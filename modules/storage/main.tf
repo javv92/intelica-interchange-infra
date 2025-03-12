@@ -1,3 +1,11 @@
+module "configuration" {
+  source = "git@github.com:ITL-ORG-INFRA/intelica-module-s3//bucket"
+
+  name                 = "configuration"
+  stack_number         = var.stack_number
+  prefix_resource_name = var.prefix_resource_name
+  kms_key_arn          = var.key_arn
+}
 module "enriched" {
   source = "git@github.com:ITL-ORG-INFRA/intelica-module-s3//bucket"
 

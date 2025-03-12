@@ -61,3 +61,12 @@ output "scheme_fee_bucket_arn" {
 output "scheme_fee_bucket_kms_key_arn" {
   value = module.scheme-fee.kms_key_arn
 }
+output "scheme_configuration_bucket_name" {
+  value = module.configuration.s3_bucket_id
+}
+output "configuration_bucket_arn" {
+  value = module.configuration.s3_bucket_arn
+}
+output "configuration_bucket_kms_key_arn" {
+  value = module.configuration.kms_key_arn
+}

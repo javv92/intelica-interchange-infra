@@ -194,6 +194,10 @@ module "instance" {
   }
 
   buckets = {
+    configuration = {
+      arn         = module.storage.configuration_bucket_arn
+      kms_key_arn = module.storage.configuration_bucket_kms_key_arn
+    }
     landing = {
       arn         = module.storage.landing_bucket_arn
       kms_key_arn = module.storage.landing_bucket_kms_key_arn

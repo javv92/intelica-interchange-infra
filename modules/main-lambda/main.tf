@@ -119,7 +119,7 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy" {
 resource "aws_lambda_function" "function" {
   function_name = local.function_name
   role          = aws_iam_role.role.arn
-  handler       = "src/trigger_app.lambda_handler"
+  handler       = "trigger_app.lambda_handler"
   runtime       = "python3.10"
   timeout       = 3
   filename      = "${path.module}/src.zip"
